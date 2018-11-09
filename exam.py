@@ -58,3 +58,4 @@ def brackets2(n, m):
         if right < left:
             yield from compute_brac(left, right + 1, k + "]")
     yield from compute_brac(0, 0, "")
+[x for x in brackets2(2,0) if x != ""]
