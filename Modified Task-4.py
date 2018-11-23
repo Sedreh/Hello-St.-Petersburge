@@ -22,14 +22,14 @@ def fibonacci(n):
 
 # Q4
 
-def sum_digits(n):
+def digitsum(n):
     if n < 10:
         return n
     else:
         # Mod (%) by 10 gives the rightmost digit (227 % 10 == 7),
         # while doing integer division by 10 removes the rightmost
 
-        return (n % 10) + sum_digits(n // 10)
+        return (n % 10) + digitsum(n // 10)
 
 
 # Q5
@@ -43,12 +43,12 @@ def reversestring(s):
 
 # Q6
 
-def ack_recursive(m, n):
+def ackermann(m, n):
     if m == 0:
         return n + 1
     if n == 0:
         return ack_recursive(m - 1, 1)
-    return ack_recursive(m - 1, ack_recursive(m, n - 1))
+    return ackermann(m - 1, ackermann(m, n - 1))
 
 
 # Q9
@@ -65,9 +65,9 @@ def concatnumbers(a, b):
 
 # Q13
 
-def gcd2(m, n):
+def gcd(a, b):
     if m % n != 0:
-        return gcd2(n, m % n)
+        return gcd(n, m % n)
     else:
         return n
 
@@ -89,7 +89,7 @@ def merge(left, right):
     return result
 
 
-def merge_sort(array):
+def mergesort(a):
     """Merge sort algorithm"""
 
     if len(array) <= 1:
@@ -97,8 +97,8 @@ def merge_sort(array):
 
     # divide array in half and merge sort recursively
     half = len(array) // 2
-    left = merge_sort(array[:half])
-    right = merge_sort(array[half:])
+    left = mergesort(a[:half])
+    right = mergesort(a[half:])
 
     return merge(left, right)
 
@@ -114,10 +114,10 @@ if __name__ == "__main__":
     assert fibonacci(10) == 55
     print('fibonacci - OK')
 
-    assert sum_digits(0) == 0
-    assert sum_digits(123) == 6
-    assert sum_digits(192837465) == 45
-    print('sum_digits - OK')
+    assert digitsum(0) == 0
+    assert digitsum(123) == 6
+    assert digitsum(192837465) == 45
+    print('digitsum - OK')
 
     assert reversestring('') == ''
     assert reversestring('1') == '1'
@@ -125,12 +125,12 @@ if __name__ == "__main__":
     assert reversestring('abacaba') == 'abacaba'
     print('reversestring - OK')
 
-    assert ack_recursive(0, 10) == 11
-    assert ack_recursive(1, 1) == 3
-    assert ack_recursive(2, 2) == 7
-    assert ack_recursive(2, 5) == 13
-    assert ack_recursive(3, 3) == 61
-    print('ack_recursive - OK')
+    assert ackermann(0, 10) == 11
+    assert ackermann(1, 1) == 3
+    assert ackermann(2, 2) == 7
+    assert ackermann(2, 5) == 13
+    assert ackermann(3, 3) == 61
+    print('ackermann - OK')
 
     assert istwopower(-5) is False
     assert istwopower(0) is False
@@ -147,14 +147,14 @@ if __name__ == "__main__":
     assert concatnumbers(1000, 2) == 10002
     print('concatnumbers - OK')
 
-    assert gcd2(1, 5) == 1
-    assert gcd2(4, 6) == 2
-    assert gcd2(18, 12) == 6
-    assert gcd2(283918822, 595730520) == 22
+    assert gcd(1, 5) == 1
+    assert gcd(4, 6) == 2
+    assert gcd(18, 12) == 6
+    assert gcd(283918822, 595730520) == 22
     print('gcd2 - OK')
 
-    assert merge_sort([]) == []
-    assert merge_sort([100]) == [100]
-    assert merge_sort([1, 3, 2]) == [1, 2, 3]
-    assert merge_sort([1, 3, 5, 4, 2]) == [1, 2, 3, 4, 5]
-    print('merge_sort - OK')
+    assert mergesort([]) == []
+    assert mergesort([100]) == [100]
+    assert mergesort([1, 3, 2]) == [1, 2, 3]
+    assert mergesort([1, 3, 5, 4, 2]) == [1, 2, 3, 4, 5]
+    print('mergesort - OK')
