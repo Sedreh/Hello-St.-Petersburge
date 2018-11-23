@@ -1,6 +1,3 @@
-__author__ = 'DELLIRAN'
-
-
 # Q1
 
 def factorial(n):
@@ -47,7 +44,7 @@ def ackermann(m, n):
     if m == 0:
         return n + 1
     if n == 0:
-        return ack_recursive(m - 1, 1)
+        return ackermann(m - 1, 1)
     return ackermann(m - 1, ackermann(m, n - 1))
 
 
@@ -66,10 +63,10 @@ def concatnumbers(a, b):
 # Q13
 
 def gcd(a, b):
-    if m % n != 0:
-        return gcd(n, m % n)
+    if a % b != 0:
+        return gcd(b, a % b)
     else:
-        return n
+        return b
 
 
 # Q14
@@ -92,11 +89,11 @@ def merge(left, right):
 def mergesort(a):
     """Merge sort algorithm"""
 
-    if len(array) <= 1:
-        return array
+    if len(a) <= 1:
+        return a
 
     # divide array in half and merge sort recursively
-    half = len(array) // 2
+    half = len(a) // 2
     left = mergesort(a[:half])
     right = mergesort(a[half:])
 
@@ -151,10 +148,11 @@ if __name__ == "__main__":
     assert gcd(4, 6) == 2
     assert gcd(18, 12) == 6
     assert gcd(283918822, 595730520) == 22
-    print('gcd2 - OK')
+    print('gcd - OK')
 
     assert mergesort([]) == []
     assert mergesort([100]) == [100]
     assert mergesort([1, 3, 2]) == [1, 2, 3]
     assert mergesort([1, 3, 5, 4, 2]) == [1, 2, 3, 4, 5]
     print('mergesort - OK')
+
