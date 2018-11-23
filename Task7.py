@@ -3,7 +3,7 @@ from functools import reduce
 from itertools import chain
 import functools
 import numpy as np
-
+import itertools
 
 # 1
 def valuesunion(*dicts):
@@ -25,18 +25,25 @@ def powers(n, m):
 
 
 # 4
-def subpalindrome(s):
-    rev = s[::-1]
-    l = len(s)
-    while l > 0:
-        for i in range(0, len(s) - l + 1):
-            half = int(l / 2)
-            left = s[i: i + half]
-            right = rev[len(s) - (i + l): len(s) - (i + l - half)]
-            if left == right:
-                return s[i:i + l]
-        l -= 1
-    return None
+def subpalindrome(string):
+    def check(word):
+        if len(word) == 1:
+            return True
+        return all(word[i] == word[-1 * (i + 1)] for i in range(len(word) // 2))
+
+    subpal = ''
+    max = 0
+    for i in range(len(string)):
+        for j in range(i + 1, len(string) + 1):
+            if check(string[i:j]):
+                if j - i > max:
+                    subpal = string[i:j]
+                    max = j - i
+                elif j - i == max:
+                    if string[i:j] < subpal:
+                        subpal = string[i:j]
+
+    return subpal
 
 
 # 5
@@ -46,16 +53,16 @@ def isIPv4(s):
 
 # 6
 def pascals():
-    res = (1,)
+    prev = (1,)
 
     for i in itertools.count(1):
         act = []
         act.append(1)
-        for k in range(len(res) - 1):
-            act.append(res[k] + res[k + 1])
+        for k in range(len(prev) - 1):
+            act.append(prev[k] + prev[k + 1])
         act.append(1)
-        yield tuple(res)
-        res = act
+        yield tuple(prev)
+        prev = act
 
 
 # 7
@@ -101,3 +108,50 @@ def brackets2(n, m):
 
 
 [x for x in brackets2(2, 0) if x != ""]
+
+if __name__ == "__main__":
+    assert valuesunion({1: 2, 4: 8}) == {2, 8}
+    assert valuesunion({1: 2}, {4: 8}) == {2, 8}
+    assert valuesunion({1: 2, 4: 8}, {'a': 'b'}, {}, {}) == {2, 8, 'b'}
+    print("valuesunion - OK")
+
+    assert popcount(0) == 0
+    assert popcount(1) == 1
+    assert popcount(10) == 2
+    assert popcount(1023) == 10
+
+    assert subpalindrome('abc') == 'a'
+    assert subpalindrome('aaaa') == 'aaaa'
+    assert subpalindrome('abaxfgf') == 'aba'
+    assert subpalindrome('abacabad') == 'abacaba'
+    print("subpalindrome - OK")
+
+    assert spiral(1) == [[1]]
+    assert spiral(2) == [[1, 2],
+                         [4, 3]]
+    assert spiral(4) == [[1, 2, 3, 4],
+                         [12, 13, 14, 5],
+                         [11, 16, 15, 6],
+                         [10, 9, 8, 7]]
+    print("spiral - OK")
+
+    assert fibonacci(1) == 1
+    assert fibonacci(2) == 1
+    assert fibonacci(3) == 2
+    assert fibonacci(4) == 3
+    assert fibonacci(5) == 5
+    assert fibonacci(6) == 8
+    assert fibonacci(7) == 13
+    print("fibonacci - OK")
+
+    assert list(brackets2(1, 0)) == ['()']
+    assert list(brackets2(0, 1)) == ['[]']
+    assert list(brackets2(1, 1)) == ['()[]', '([])', '[()]', '[]()']
+    assert list(brackets2(3, 0)) == ['((()))', '(()())', '(())()', '()(())',
+                                     '()()()']
+    assert list(brackets2(2, 1)) == ['(())[]', '(()[])', '(([]))', '()()[]',
+                                     '()([])', '()[()]', '()[]()', '([()])',
+                                     '([]())', '([])()', '[(())]', '[()()]',
+                                     '[()]()', '[](())', '[]()()']
+    print("brackets - OK")
+    print(subpalindrome("qfryinzykktqbvgdzaggxyjkw"))
