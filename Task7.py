@@ -21,7 +21,18 @@ def popcount(n):
 
 # 3
 def powers(n, m):
-    return dict([(i, i ** (i % m)) for i in range(1, n + 1)])
+    buf = {}
+
+    def power(n):
+        a = 1
+        for i in range(n):
+            a *= n
+        return a
+
+    for i in range(1, n+1):
+        buf[i] = power(i) % m
+    return buf
+print(powers(4, 50))
 
 
 # 4
@@ -48,7 +59,18 @@ def subpalindrome(string):
 
 # 5
 def isIPv4(s):
-    return re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", s) is not None
+    for i in s:
+        if i not in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'):
+            return False
+    num = s.split('.')
+    if len(num) != 4:
+        return False
+    for n in num:
+        if int(n) < 0 or int(n) > 255:
+            return False
+        if n[0] == '0' and len(n) != 1:
+            return False
+    return True
 
 
 # 6
@@ -74,8 +96,7 @@ def spiral(n):
         m = np.r_[m, b[0, :], b[1:, -1], b[-1, :-1][::-1], b[1:-1, 0][::-1]]
         b = b[1:-1, 1:-1]
     a[list(m[1:])] = list(a)
-    return a.reshape((n, n)) + 1
-
+    return (a.reshape((n, n)) + 1).tolist()
 
 # 8
 def fibonacci(n):
@@ -109,49 +130,3 @@ def brackets2(n, m):
 
 [x for x in brackets2(2, 0) if x != ""]
 
-if __name__ == "__main__":
-    assert valuesunion({1: 2, 4: 8}) == {2, 8}
-    assert valuesunion({1: 2}, {4: 8}) == {2, 8}
-    assert valuesunion({1: 2, 4: 8}, {'a': 'b'}, {}, {}) == {2, 8, 'b'}
-    print("valuesunion - OK")
-
-    assert popcount(0) == 0
-    assert popcount(1) == 1
-    assert popcount(10) == 2
-    assert popcount(1023) == 10
-
-    assert subpalindrome('abc') == 'a'
-    assert subpalindrome('aaaa') == 'aaaa'
-    assert subpalindrome('abaxfgf') == 'aba'
-    assert subpalindrome('abacabad') == 'abacaba'
-    print("subpalindrome - OK")
-
-    assert spiral(1) == [[1]]
-    assert spiral(2) == [[1, 2],
-                         [4, 3]]
-    assert spiral(4) == [[1, 2, 3, 4],
-                         [12, 13, 14, 5],
-                         [11, 16, 15, 6],
-                         [10, 9, 8, 7]]
-    print("spiral - OK")
-
-    assert fibonacci(1) == 1
-    assert fibonacci(2) == 1
-    assert fibonacci(3) == 2
-    assert fibonacci(4) == 3
-    assert fibonacci(5) == 5
-    assert fibonacci(6) == 8
-    assert fibonacci(7) == 13
-    print("fibonacci - OK")
-
-    assert list(brackets2(1, 0)) == ['()']
-    assert list(brackets2(0, 1)) == ['[]']
-    assert list(brackets2(1, 1)) == ['()[]', '([])', '[()]', '[]()']
-    assert list(brackets2(3, 0)) == ['((()))', '(()())', '(())()', '()(())',
-                                     '()()()']
-    assert list(brackets2(2, 1)) == ['(())[]', '(()[])', '(([]))', '()()[]',
-                                     '()([])', '()[()]', '()[]()', '([()])',
-                                     '([]())', '([])()', '[(())]', '[()()]',
-                                     '[()]()', '[](())', '[]()()']
-    print("brackets - OK")
-    print(subpalindrome("qfryinzykktqbvgdzaggxyjkw"))
