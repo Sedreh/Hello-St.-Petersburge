@@ -20,6 +20,18 @@ def fibonacci(n):
     return fibonacci(n - 1) + fibonacci(n - 2)
 
 
+# Q3
+
+def recurrent(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    if n % 2 == 0:
+        return recurrent(n // 2)
+    else:
+        return recurrent((n - 1) // 2 + 1) + recurrent((n - 1) // 2)
+
 # Q4
 
 def digitsum(n):
@@ -51,18 +63,77 @@ def ackermann(m, n):
     return ackermann(m - 1, ackermann(m, n - 1))
 
 
+#Q7
+
+def drawborders(n):
+    if n == 1:
+        return ['+']
+    elif n == 2:
+        return ['++',
+                '++']
+    else:
+        prev = drawborders(n - 2)
+        x = [0 for x in range(n)]
+        x[0] = '+'
+        for i in range(n - 2):
+            x[0] += '-'
+        x[0] += '+'
+        for i in range(1, n - 1):
+            x[i] = '|' + prev[i - 1] + '|'
+        x[n - 1] = '+'
+        for i in range(n - 2):
+            x[n - 1] += '-'
+        x[n - 1] += '+'
+        return x
+
+
+def genbinarystrings(n):
+    answ = []
+    if n == 0:
+        return ['']
+    else:
+        next = genbinarystrings(n-1)
+        answ += list(map(lambda x: '0' + x, next)) + \
+                list(map(lambda x: '1' + x, next))
+    return answ
+
 # Q9
 
 def istwopower(n):
-    return n > 0 and (n & (n - 1)) == 0
+    n = n/2
+    if n == 2:
+        return True
+    elif n > 2:
+        return istwopower(n)
+    else:
+        return False
 
 
 # Q10
 
 def concatnumbers(a, b):
-    return a * (10 ** len(str(b))) + b
+        if b // 10 == 0:
+        return a*10 + b
+    else:
+        return concatnumbers(a, b // 10) * 10 + b % 10
 
+#11
 
+def abacaba(n):
+    if n == 1:
+        return [1]
+    else:
+        small = abacaba(n - 1)
+        return small + [n] + small
+
+#12
+
+def parentheses(s):
+    """Text formating function."""
+    if len(s) in {0, 1, 2}:
+        return "(" + s + ")"
+    else:
+        return "(" + s[0] + parentheses(s[1: -1]) + s[-1] + ")"
 # Q13
 
 def gcd(a, b):
@@ -114,6 +185,12 @@ if __name__ == "__main__":
     assert fibonacci(10) == 55
     print('fibonacci - OK')
 
+    assert recurrent(2) == 1
+    assert recurrent(3) == 2
+    assert recurrent(5) == 3
+    assert recurrent(7) == 3
+    print('recurrent - OK')
+
     assert digitsum(0) == 0
     assert digitsum(123) == 6
     assert digitsum(192837465) == 45
@@ -132,6 +209,34 @@ if __name__ == "__main__":
     assert ackermann(3, 3) == 61
     print('ackermann - OK')
 
+    assert drawborders(1) == ['+']
+
+    assert drawborders(2) == ['++',
+                              '++']
+
+    assert drawborders(3) == ['+-+',
+                              '|+|',
+                              '+-+']
+
+    assert drawborders(4) == ['+--+',
+                              '|++|',
+                              '|++|',
+                              '+--+']
+
+    assert drawborders(5) == ['+---+',
+                              '|+-+|',
+                              '||+||',
+                              '|+-+|',
+                              '+---+']
+    print('drawborders - OK')
+
+    assert genbinarystrings(0) == ['']
+    assert genbinarystrings(1) == ['0', '1']
+    assert genbinarystrings(2) == ['00', '01', '10', '11']
+    assert genbinarystrings(3) == ['000', '001', '010', '011', '100', '101',
+                                   '110', '111']
+    print('genbinarystrings - OK')
+
     assert istwopower(-5) is False
     assert istwopower(0) is False
     assert istwopower(1) is True
@@ -146,6 +251,17 @@ if __name__ == "__main__":
     assert concatnumbers(123, 789) == 123789
     assert concatnumbers(1000, 2) == 10002
     print('concatnumbers - OK')
+
+    assert abacaba(1) == [1]
+    assert abacaba(2) == [1, 2, 1]
+    assert abacaba(3) == [1, 2, 1, 3, 1, 2, 1]
+    assert abacaba(4) == [1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1]
+    print('abacaba - OK')
+
+    assert parentheses('example') == '(e(x(a(m)p)l)e)'
+    assert parentheses('odd') == '(o(d)d)'
+    assert parentheses('even') == '(e(ve)n)'
+    print('parentheses - OK')
 
     assert gcd(1, 5) == 1
     assert gcd(4, 6) == 2
