@@ -1,34 +1,45 @@
 __author__ = 'DELLIRAN'
-#def unique(e)
+
+# Q1
+
 def unique(e):
-    # unique_e1 = []
-    # for x in e:
-    #     if x not in unique_e1:
-    #         unique_e1.append(x)
-    # # for x in unique_e1:
-    # #     print (x)
-    # unique_e1.sort()
-    # return unique_e1
     return sorted(list(set(e)))
 
 
-#def transposeDict(d)
+# Q2
 def transpose_dict(d):
     return dict([(v, k) for k, v in d.items()])
 
-d = {'child1': 'parent1',
-     'child2': 'parent2',
-     }
 
-
-#def mex(e):
+# Q3
 def mex(e):
-    return next(i for i in range(1, len(e)+2) if i not in set(e))
+    return next(i for i in range(1, len(e) + 2) if i not in set(e))
 
 
-#frequencyDict(s):
-from collections import Counter
-
+# Q5
 def frequencyDict(s):
-    return dict(Counter(s))
-print(frequencyDict("abbdhbhsbdbcd"))
+    return {ch: s.count(ch) for ch in set(s)}
+
+
+if __name__ == "__main__":
+
+    assert unique([1, 2, 1, 3]) == [1, 2, 3], "unique func. error"
+    assert unique({5, 1, 3}) == [1, 3, 5], "unique func. error"
+    assert unique('adsfasdf') == ['a', 'd', 'f', 's'], "unique func. error"
+    print("unique func. - OK")
+
+    assert transpose_dict({}) == {}, "transposeDict func. error"
+    assert transpose_dict({1: 'a', 2: 'b'}) == {'a': 1, 'b': 2}, \
+        "transposeDict func. error"
+    assert transpose_dict({1: 1}) == {1: 1}, "transposeDict func. error"
+    print("transposeDict func. - OK")
+
+    assert mex([1, 2, 3]) == 4, "mex func. error"
+    assert mex(['asdf', 123]) == 1, "mex func. error"
+    assert mex([0, 0, 1, 0]) == 2, "mex func. error"
+    print('mex func. - OK')
+
+    assert frequencyDict('') == {}, "frequencyDict func. error"
+    assert frequencyDict('abacaba') == {'a': 4, 'b': 2, 'c': 1}, \
+        "frequencyDict func. error"
+    print("frequencyDict func. - OK")
