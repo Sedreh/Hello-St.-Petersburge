@@ -100,31 +100,31 @@ def genbinarystrings(n):
 # Q9
 
 def istwopower(n):
-    n = n/2
-    if n == 2:
+    if n == 1:
         return True
-    elif n > 2:
-        return istwopower(n)
-    else:
+    elif n <= 0:
         return False
+    elif n % 2 == 0:
+        return istwopower(n // 2)
+    return False
 
 
 # Q10
 
 def concatnumbers(a, b):
         if b // 10 == 0:
-        return a*10 + b
-    else:
-        return concatnumbers(a, b // 10) * 10 + b % 10
+            return a*10 + b
+        else:
+            return concatnumbers(a, b // 10) * 10 + b % 10
 
 #11
 
 def abacaba(n):
-    if n == 1:
+    if n ==1:
         return [1]
     else:
-        small = abacaba(n - 1)
-        return small + [n] + small
+        small = abacaba(n-1)
+    return small + [n] + small
 
 #12
 
