@@ -40,16 +40,15 @@ class LinkedQueue(object):
 
     def push(self, elem):
         """Method. Pushes 'elem' to queue."""
-        new_node = QueueNode(elem)
-        if self.end is not None:
-            # make the front attribute of old node point to new node
-            self.end.front = new_node
+        if not self.count:
+            self.first = QueueNode(elem, None)
+            self.end = self.first
+            self.count = 1
         else:
-            # if first ever node in Queue both front and tail will point to it
+            new_node = QueueNode(elem, None)
+            self.first.next = new_node
             self.first = new_node
-
-        self.end = new_node
-        self.count += 1
+            self.count += 1
 
 
     def pop(self):
