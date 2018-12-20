@@ -41,7 +41,7 @@ class FSItem(object):
 
     def getname(self):
         ''' Returns name of current item '''
-        return self.path
+        return self.path[self.path.rfind('/')+1:]
 
     def isfile(self):
         ''' Returns True if current item exists and current item is file, False otherwise '''
@@ -76,12 +76,29 @@ class File(FSItem):
         f.write(content)
         f.close()
 
+    def create(self):
+        ''' Creates new item in OS
+            raise FileSystemError if item with such path already exists '''
+        if os.path.exists(self.path):
+            raise FileSystemError("File with name {0} already exists".
+                                  format(self.path))
+        if self.path.rfind('/') > 0:
+            os.makedirs(self.path[0:self.path.rfind('/')])
+        f = open(self.path, "w")
+        f.close()
 
-    def getcontent(self):
+
+    def getcontent(self, max_lines = None, head = True):
         ''' Returns list of lines in file (without trailing end-of-line)
                 raise FileSystemError if file does not exist '''
         with open(self.path, 'r') as f:
-            return f.readlines()
+            lines = [line for line in f.readlines()]
+        if max_lines is not None:
+            if head:
+                lines = lines[0:max_lines]
+            else:
+                lines = lines[-max_lines:]
+        return "\n".join(lines)
 
     def __iter__(self):
         ''' Returns iterator for lines of this file
@@ -102,6 +119,15 @@ class Directory(FSItem):
             raise FileSystemError("file with name {0} already exists".
                                       format(self.path))
 
+    def create(self):
+        ''' Creates new item in OS
+                raise FileSystemError if item with such path already exists '''
+        if os.path.exists(self.path):
+            raise FileSystemError("Directory with name {0} already exists".
+                                    format(self.path))
+
+        os.makedirs(self.path)
+
 
 
     def items(self):
@@ -111,7 +137,10 @@ class Directory(FSItem):
             raise FileSystemError("directory with name {0} does not exists".
                                       format(self.path))
         for path in os.listdir(self.path):
-            yield FSItem(path)
+            if os.path.isfile(os.path.join(self.path, path)):
+                yield File(os.path.join(self.path, path))
+            elif os.path.isdir(os.path.join(self.path, path)):
+                yield Directory(os.path.join(self.path, path))
 
 
     def files(self):
@@ -121,8 +150,8 @@ class Directory(FSItem):
             raise FileSystemError("directory with name {0} does not exists".
                                       format(self.path))
         for path in os.listdir(self.path):
-            if os.path.isfile(self.path + "/" + path):
-                yield File(path)
+            if os.path.isfile(os.path.join(self.path, path)):
+                yield File(os.path.join(self.path, path))
 
 
     def subdirectories(self):
@@ -153,10 +182,7 @@ class Directory(FSItem):
     def getsubdirectory(self, name):
         ''' Returns Directory instance with subdirectory of current directory with name "name"
                 raise FileSystemError if item "name" already exists and item "name" is not directory '''
-        if not super().isdirectory():
-            raise FileSystemError("directory with name {0} does not exists".
-                                      format(self.path))
-        if not os.path.isdir(self.path + "/" + name):
+        if not os.path.isdir(os.path.join(self.path, name)):
             raise FileSystemError("{0} is not a subdirectory".
-                                      format(self.path + "/" + name))
-        return Directory(self.path + "/" + name)
+                                      format(os.path.join(self.path, name)))
+        return Directory(os.path.join(self.path, name))
