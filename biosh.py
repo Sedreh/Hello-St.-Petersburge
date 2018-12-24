@@ -33,11 +33,11 @@ def main(args):
         elif cmd == 'head':
             path = cwd.path if not cmdargs else cmdargs[0]
             file = File(path)
-            print(file.getcontent(max_lines))
+            print(file.getcontent(max_lines=10))
         elif cmd == 'tail':
             path = cwd.path if not cmdargs else cmdargs[0]
             file = File(path)
-            print(file.getcontent(max_lines, head = False))
+            print(file.getcontent(max_lines=10, head = False))
         elif cmd == 'pwd':
             print(cwd.path)
         elif cmd == 'touch':
