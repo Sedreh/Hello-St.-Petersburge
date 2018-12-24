@@ -134,15 +134,8 @@ class Directory(FSItem):
     def items(self):
         ''' Yields FSItem instances of items inside of current directory
                 raise FileSystemError if current directory does not exists '''
-        if not super().isdirectory():
-            raise FileSystemError("directory with name {0} does not exists".
-                                      format(self.path))
-        for path in os.listdir(self.path):
-            if os.path.isfile(os.path.join(self.path, path)):
-                yield File(os.path.join(self.path, path))
-            elif os.path.isdir(os.path.join(self.path, path)):
-                yield Directory(os.path.join(self.path, path))
-
+        yield from self.files()
+        yield from self.subdirectories()
 
     def files(self):
         ''' Yields File instances of files inside of current directory
