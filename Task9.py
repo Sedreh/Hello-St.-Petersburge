@@ -19,6 +19,7 @@ class FSItem(object):
                 raise FileSystemError if item "newname" already exists '''
         if self.isfile() or self.isdirectory():
             os.rename(self.path, newname)
+            self.path = newname
         else:
              raise FileSystemError("{0} item not exists ".
                                       format(self.path))
