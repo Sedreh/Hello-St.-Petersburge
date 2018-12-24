@@ -134,8 +134,8 @@ class Directory(FSItem):
     def items(self):
         ''' Yields FSItem instances of items inside of current directory
                 raise FileSystemError if current directory does not exists '''
-        yield from self.files()
-        yield from self.subdirectories()
+        yield self.files()
+        yield self.subdirectories()
 
     def files(self):
         ''' Yields File instances of files inside of current directory
