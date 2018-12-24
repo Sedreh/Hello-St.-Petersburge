@@ -42,7 +42,7 @@ class FSItem(object):
 
     def getname(self):
         ''' Returns name of current item '''
-        return self.path[self.path.rfind('/')+1:]
+        return self.path[self.path.rfind(os.sep)+1:]
 
     def isfile(self):
         ''' Returns True if current item exists and current item is file, False otherwise '''
