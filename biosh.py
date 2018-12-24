@@ -43,7 +43,10 @@ def main(args):
         elif cmd == 'touch':
             path = cwd.path if not cmdargs else cmdargs[0]
             file = File(path)
-            file.create()
+            try:
+                file.create()
+            except:
+                print("File already exists")
         elif cmd == 'find':
             name = "." if not cmdargs else cmdargs[0]
             sub_dir = cwd.getsubdirectory(name)
