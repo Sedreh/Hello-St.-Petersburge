@@ -99,7 +99,7 @@ class File(FSItem):
                 lines = lines[0:max_lines]
             else:
                 lines = lines[-max_lines:]
-        return "\n".join(lines)
+        return "".join(lines)
 
     def __iter__(self):
         ''' Returns iterator for lines of this file
